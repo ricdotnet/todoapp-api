@@ -1,17 +1,16 @@
-import mysql, { Pool } from 'mysql';
+import mysql, { Connection, Pool } from 'mysql';
 
-import dotenv from 'dotenv';
-dotenv.config();
+import config from '../config';
 
 export class DbConnect {
 
-  private host: string = <string>process.env.DB_HOST;
+  private host: string = config.database.host;
   private port: number = 3306;
   private timeout: number = 5000;
 
-  private user: string = <string>process.env.DB_USER;
-  private password: string = <string>process.env.DB_PASSWORD;
-  private database: string = <string>process.env.DB_DATABASE;
+  private user: string = config.database.user;
+  private password: string = config.database.password;
+  private database: string = config.database.db;
 
   createPool(): Pool {
     return mysql.createPool({
@@ -25,14 +24,14 @@ export class DbConnect {
   }
 
   async getConnection() {
-      this.createPool().getConnection((err, conn) => {
-        if (err) {
-          console.log('Could not connect.');
-          return;
-        }
+    this.createPool().getConnection((err, conn) => {
+      if (err) {
+        console.log('Could not connect.');
+        return;
+      }
 
-        return conn;
-      });
+      return conn;
+    });
   }
 
 }

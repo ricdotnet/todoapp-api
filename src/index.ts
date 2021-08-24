@@ -32,10 +32,10 @@ app.listen(PORT, async () => {
       + 'DATABASE CONNECTED\n'
       + '------------------------------')
     }).finally(() => {
-      console.log(`Server is listening on port ${PORT || 4000}`)
+      console.log(`Server is listening on port ${PORT || 4000}\n`)
     })
   } catch (e) {
     console.log(e)
   }
-  
+
 });
