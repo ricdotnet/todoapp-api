@@ -25,17 +25,14 @@ export class DbConnect {
   }
 
   async getConnection() {
-    // return new Promise((resolve, reject) => {
       this.createPool().getConnection((err, conn) => {
         if (err) {
           console.log('Could not connect.');
           return;
         }
 
-        // resolve(conn);
         return conn;
       });
-    // })
   }
 
 }
