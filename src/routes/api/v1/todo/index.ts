@@ -1,17 +1,18 @@
 import { Router, Request, Response } from 'express';
 
-import { DbConnect } from '../../../../database/connect';
-const db = new DbConnect();
+import { Query } from '../../../../database/query';
+const _q = new Query();
 
 const todo: Router = Router();
 export default todo;
 
-todo.get('/all', (req: Request, res: Response) => {
-  db.createPool().getConnection((error, connection) => {
-    if(error) return console.log(error)
+todo.get('/all', async (req: Request, res: Response) => {
+  // _q.connection(<_Query>{query: 'select * from todo', values: ['hey', 'yo']});
 
-    connection.query('select * from todo', (error, result) => {
-      res.send(result)
-    });
-  })
-})
+  let ress = await _q.select('*')
+    .from('todo')
+    .where('')
+    .execute()
+
+  res.send(ress);
+});
