@@ -11,7 +11,9 @@ todo.get('/all', async (req: Request, res: Response) => {
 
   let ress = await _q.select('*')
     .from('todo')
-    .where('')
+    .where({complete: 'yes'}) // object as: {username: 'username'} or {id: id}
+    // .andWhere({id: 48})
+    .orWhere({id: 48})
     .execute()
 
   res.send(ress);

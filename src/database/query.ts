@@ -1,21 +1,16 @@
 import { DbConnect } from "./connect";
 const db = new DbConnect();
 
+interface Where extends Object {
+  [key: string]: any
+}
+
 export class Query {
 
   private _query: string;
-  private _columns: string | string[];
-  private _table: string; // model maybe?
-  private _where: string; // use it as a string[] too for multiple and / or?
-
-  private _results: string | string[]; // query results
 
   constructor() {
     this._query = '';
-    this._columns = '';
-    this._table = '';
-    this._where = '';
-    this._results = '';
   }
 
   /**
@@ -33,28 +28,25 @@ export class Query {
           resolve(result);
         });
       });
-    })
+    });
   }
 
   /**
    * Select clause of the query.
    * Can be a unique string or an array of strings.
+   * Use all or * to select all columns.
    * @param value 
    * @returns 
    */
   select(value: string | string[]) {
-    // if(typeof value === "object") {
-    //   for(let el in value) {
-    //     this._where += el
-    //     if(value.indexOf(el) !== -1) {
-    //       this._where += ','
-    //     }
-    //   }
-    // }
     this.reset();
 
-    // this._where += value;
-    this._query += `select ${value} `;
+    if(value === '*' || value === 'all') {
+      this._query += `select * `
+    } else {
+      this._query += `select ${value} `;
+    }
+
     return this;
   }
 
@@ -68,8 +60,35 @@ export class Query {
     return this;
   }
 
-  where(where: string) {
-    this._query += where;
+  /**
+   * Object with the where clause, as {username: 'username'}.
+   * Only one argument is passable with this object.
+   * To pass more use andWhere or orWhere.
+   * @param where 
+   * @returns 
+   */
+  where(value: Where) {
+    this._query += `where `
+    for(let el in value) {
+      this._query += `${el} = '${value[el]}' `
+      break; // temp break to only use the 1st object.
+    }
+    return this;
+  }
+
+  andWhere(value: Where) {
+    for(let el in value) {
+      this._query += `and `
+      this._query += `${el} = '${value[el]}' `
+    }
+    return this;
+  }
+
+  orWhere(value: Where) {
+    for(let el in value) {
+      this._query += `or `
+      this._query += `${el} = '${value[el]}' `
+    }
     return this;
   }
 
