@@ -1,8 +1,8 @@
 import {Router, Request, Response} from 'express';
 
-import {Query} from '../../../../database/query';
+import {QueryBuilder} from "../../../../database";
 
-const _q = new Query();
+const _q = new QueryBuilder();
 
 const todo: Router = Router();
 export default todo;
@@ -18,10 +18,15 @@ todo.get('/all', async (req: Request, res: Response) => {
   //   .orWhere({ id: 48 })
   //   .execute();
 
-  ress = await _q.insert('todo')
-    .values(['title', 'content', 'user_id'],
-      ['hello...', 'this is the content', 'user_id'])
-    .execute()
+  // ress = await _q.insert('todo')
+  //   // .values(['title', 'content', 'user_id'],
+  //   //   ['hello...', 'this is the content', 'user_id'])
+  //   .values({
+  //     title: 'another',
+  //     content: 'more content',
+  //     user_id: 'new_user'
+  //   })
+  //   .execute()
 
   res.send(ress);
 });

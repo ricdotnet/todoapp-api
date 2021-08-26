@@ -1,8 +1,8 @@
-import mysql, { Connection, Pool } from 'mysql';
+import mysql, {Pool} from 'mysql';
 
 import config from '../config';
 
-export class DbConnect {
+export default class DatabaseConnect {
 
   private host: string = config.database.host;
   private port: number = 3306;

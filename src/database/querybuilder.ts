@@ -1,12 +1,12 @@
-import {DbConnect} from "./connect";
+import DatabaseConnect from "./connect";
 
-const db = new DbConnect();
+const db = new DatabaseConnect();
 
 interface Values extends Object {
   [key: string]: any
 }
 
-export class Query {
+export default class QueryBuilder {
 
   private _query: string;
 
@@ -46,18 +46,37 @@ export class Query {
    * This will set the values to be inserted. It is a bit hacky though. The developer needs to
    * pass two arrays as parameters.
    * TODO: change this to an 'key: value' js object.
-   * @param columns
+   // * @param columns
    * @param values
    */
-  values(columns: string[], values: string[]) {
-    this._query += `(${columns}) values(`;
-    for (let value in values) {
-      this._query += `'${values[value]}'`;
-      if (parseInt(value) !== values.length - 1) {
-        this._query += `,`;
+  // values(columns: string[], values: string[]) {
+  //   this._query += `(${columns}) values(`;
+  //   for (let value in values) {
+  //     this._query += `'${values[value]}'`;
+  //     if (parseInt(value) !== values.length - 1) {
+  //       this._query += `,`;
+  //     }
+  //   }
+  //   this._query += `)`;
+  //   return this;
+  // }
+  values(values: Values) {
+    this._query += `(`
+    for(let el in values) {
+      this._query += `${el}`
+      if(Object.keys(values).indexOf(el) !== Object.keys(values).length-1) {
+        this._query += ','
       }
     }
-    this._query += `)`;
+    this._query += `) values (`
+    for(let el in values) {
+      this._query += `'${values[el]}'`
+      if(Object.keys(values).indexOf(el) !== Object.keys(values).length-1) {
+        this._query += ','
+      }
+    }
+    this._query += `) `
+
     return this;
   }
 

@@ -6,8 +6,8 @@ import dotenv from 'dotenv';
 
 import router from './routes';
 
-import { DbConnect } from './database/connect';
-const db = new DbConnect();
+import {DatabaseConnect} from './database';
+const db = new DatabaseConnect();
 
 // create express app
 const app: express.Express = express();
@@ -26,11 +26,11 @@ app.use(router);
 const PORT: string = process.env.PORT || '4000';
 app.listen(PORT, async () => {
 
-  try{
+  try {
     await db.getConnection().then(() => {
       console.log('\n------------------------------\n'
-      + 'DATABASE CONNECTED\n'
-      + '------------------------------')
+        + 'DATABASE CONNECTED\n'
+        + '------------------------------')
     }).finally(() => {
       console.log(`Server is listening on port ${PORT || 4000}\n`)
     })
