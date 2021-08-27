@@ -19,7 +19,6 @@ export default class QueryBuilder {
    * @returns the results array or an error.
    */
   execute() {
-    console.log(this._query)
     return new Promise((resolve, reject) => {
       db.createPool().getConnection((error, conn) => {
         if (error) return console.log('Error...' + error);
@@ -27,6 +26,7 @@ export default class QueryBuilder {
         conn.query(this._query, (error, result) => {
           if (error) return console.log('Error...' + error);
 
+          this.reset();
           resolve(result);
         });
       });
@@ -88,8 +88,6 @@ export default class QueryBuilder {
    * @param columns
    */
   select(columns: string | string[]) {
-    this.reset(); // temp solution to reset the query.
-
     if (columns === '*' || columns === 'all') {
       this._query += `select * `
     } else {

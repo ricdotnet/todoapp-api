@@ -13,3 +13,10 @@ export function Column(values: Object): PropertyDecorator {
     console.log(propertyKey, values)
   }
 }
+
+export function addOne(): MethodDecorator {
+  return function (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
+    console.log(target)
+    console.log(propertyKey)
+  }
+}
